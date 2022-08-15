@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "source_location": "c",
+        "stdio.h": "c",
+        "stddef.h": "c"
+    }
+}
