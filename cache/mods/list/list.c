@@ -1,5 +1,5 @@
 #include "list.h"
-#include "page.h"
+#include "../page/page.h"
 
 #include <stdlib.h> /*malloc*/
 #include <stddef.h>/*NULL*/

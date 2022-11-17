@@ -1,11 +1,8 @@
-#include <assert.h>
-#include "list.h"
-#include "page.h"
-#include <stddef.h>
+#include "../decl/list_test.h"
 
-void test_page_t()
+void TestPageT()
 {
-    printf("test_page_t_begin \n");
+    printf("TestPageT ... \n");
     struct page_t lhs = {0, 10, "tententent"};
 
     struct page_t rhs;
@@ -16,12 +13,12 @@ void test_page_t()
     assert(lhs.index==rhs.index);
     assert(lhs.sz==rhs.sz);
     assert(lhs.data==rhs.data);
-    printf("test_page_t_end \n\n");
+    printf("TestPageT OK \n\n");
 }
 
-void test_list_node_create()
+void TestListNodeCreate()
 {
-    printf("test_list_node_create \n");
+    printf("TestListNodeCreate ...  \n");
     struct page_t page_1 = {0, 10, "tententent"};
 
     struct list_node_t * node_ptr_1_lhs = list_node_create(NULL, NULL, &page_1);
@@ -43,25 +40,5 @@ void test_list_node_create()
     assert( node_ptr_3_lhs->data = node_3_rhs.data );
     assert( node_ptr_3_lhs->next = node_3_rhs.next );
     assert( node_ptr_3_lhs->prev = node_3_rhs.prev );
-    printf("test_list_node_create \n\n");
-}
-
-int main()
-{
-    test_page_t();
-    test_list_node_create();
-
-    struct page_t l;
-    printf("index: %d\n", l.index );
-    printf("size: %d\n", l.sz );
-    printf("data: %p\n", (void*) l.data);
-    printf("data: %d\n\n", (void*) l.data==NULL);
-
-    l.data = NULL;
-    printf("data: %p\n", (void*) l.data);
-    printf("data: %d\n\n", (void*) l.data==NULL);
-    /* index sz data */ 
-    assert(2==2);
-    assert(2==-2);
-    return 0;
+    printf("TestListNodeCreate OK \n\n");
 }

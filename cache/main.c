@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "list.h"
-#include "page.h"
+#include "mods/list/list.h"
+#include "mods/page/page.h"
 /*gcc -Wall -g hello.c -o hello*/
 /*-Wall : generate all possible Warnings*/
 /*-g : generate debug information*/
