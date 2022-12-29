@@ -20,8 +20,8 @@ endif
 deps.mk: $(SRCMODULES)
 	$(CC) -MM $^ > $@
 
-clean: 
-	rm -f *.o *.mk *.out prog
+clean:
+	bash clean.sh . o mk out exe
 
 run: prog
 	./prog
