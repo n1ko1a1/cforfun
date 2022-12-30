@@ -2,8 +2,8 @@
 #include "page.h"
 
 #include <stdlib.h> /*malloc*/
-#include <stddef.h>/*NULL*/
-#include <stdio.h>/*printf*/
+#include <stddef.h> /*NULL*/
+#include <stdio.h>  /*printf*/
 
 
 struct list_node_t * list_node_create(struct list_node_t * next, struct list_node_t * prev, struct page_t * data)
