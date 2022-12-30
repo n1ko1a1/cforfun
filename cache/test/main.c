@@ -17,6 +17,5 @@ int main()
     printf("data: %d\n\n", (void*) l.data==NULL);
     /* index sz data */ 
     assert(2==2);
-    assert(2==-2);
     return 0;
 }
