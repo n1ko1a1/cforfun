@@ -6,3 +6,5 @@
 
 void TestPageT();
 void TestListNodeCreate();
+void TestListPushFront();
+void TestListPushBack();

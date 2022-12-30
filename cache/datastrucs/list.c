@@ -44,13 +44,12 @@ void list_push_back( struct list_t *lst, struct page_t *pg )
 {
     struct list_node_t *tmp = malloc( sizeof( struct list_node_t ) );
     tmp->prev = NULL;
+    tmp->next = NULL;
     tmp->data = pg;
-    tmp->next = lst->top;
     if( lst->tail )
     {
         tmp->prev = lst->tail;
         lst->tail->next = tmp;
-        tmp->next = NULL;
     }
     else 
         lst->top = tmp;
@@ -77,7 +76,6 @@ void list_free( struct list_t * lst )
         struct list_node_t * tmp = current->next;
         free(current);
         current = tmp;
-
     }
     free(lst);
     /*you cannot use this pointer anymore 
