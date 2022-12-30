@@ -21,7 +21,7 @@ deps.mk: $(SRCMODULES)
 	$(CC) -MM $^ > $@
 
 clean:
-	bash clean.sh . o mk out exe
+	bash clean.sh . .o .mk .out .exe prog
 
 run: prog
 	./prog
