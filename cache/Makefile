@@ -6,6 +6,7 @@ default_target = test/main.c
 endif
 OBJMODULES = $(SRCMODULES:.c=.o)
 CFLAGS = -Wall -g -ansi -pedantic
+CC = gcc
 
 %.o: %.c %.h
 	$(CC) $(CFLAGS) -c $< -o $@	
