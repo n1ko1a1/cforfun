@@ -1,4 +1,4 @@
-#include "../decl/list_test.h"
+#include "list_test.h"
 
 void TestPageT()
 {

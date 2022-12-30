@@ -1,6 +1,6 @@
 #include <assert.h>
-#include "../../mods/list/list.h"
-#include "../../mods/page/page.h"
+#include "../datastrucs/list.h"
+#include "../datastrucs/page.h"
 #include <stddef.h>
 #include <stdio.h>
 
