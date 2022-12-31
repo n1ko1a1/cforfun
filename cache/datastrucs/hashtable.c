@@ -92,22 +92,20 @@ void htable_rehash(struct hash_t **table) {
     *table = new_table;
 }
 
-/*
+
 void hashmap_node_free(struct hashmap_node_t * node) {
     while (node) {
         struct hashmap_node_t * next = node->next;
-        free(&(node->entry));
+        free(node);  /*probably need to improve that too*/
         node = next;
     }
-    free(node);
 }
-*/
 
 void htable_free(struct hash_t *table) {
     int i;
     for (i=0; i<table->len; i++) {
-        struct hashmap_node_t * node = *(table->htab + i);
-        free(node);  /*probably need to improve that too*/
+        struct hashmap_node_t *node = *(table->htab + i);
+        hashmap_node_free(node);
     }
     free(table->htab);
     free(table);
