@@ -31,4 +31,7 @@ void htable_remove(struct hash_t *table, int key);
 /*free memory*/
 void htable_free(struct hash_t *h);
 
+/*rehash the table*/
+void htable_rehash(struct hash_t **table);
+
 #endif

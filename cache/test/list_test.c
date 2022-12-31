@@ -40,6 +40,7 @@ void TestListNodeCreate()
     assert( node_ptr_3_lhs->data == node_3_rhs.data );
     assert( node_ptr_3_lhs->next == node_3_rhs.next );
     assert( node_ptr_3_lhs->prev == node_3_rhs.prev );
+    
     free(node_ptr_1_lhs);
     free(node_ptr_2_lhs);
     free(node_ptr_3_lhs);

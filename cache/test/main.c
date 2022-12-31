@@ -13,6 +13,7 @@ int main()
     TestHTableInsert();
     TestHTableFind();
     TestHTableRemove();
+    TestHTableRehash();
     /*
     struct page_t l;
     printf("index: %d\n", l.index );

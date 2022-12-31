@@ -9,3 +9,4 @@ void TestHTableCreate();
 void TestHTableFind();
 void TestHTableInsert();
 void TestHTableRemove();
+void TestHTableRehash();
