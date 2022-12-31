@@ -1,20 +1,21 @@
 #include "hashtable.h"
 #include "list.h"
 #include "page.h"
+#include "math.h"
 
 #include <stdlib.h> /*malloc*/
 #include <stddef.h> /*NULL*/
 #include <stdio.h>  /*printf*/
 
-unsigned int hash(unsigned int i) {
+unsigned int GetHash(unsigned int i) {
     return (i*2654435761 % (unsigned int)pow(2, 32));
 }
 
-struct hash_t *htable_create(int len) {
+struct hash_t *HTableCreate(int len) {
+    int i;
     struct hash_t *table = malloc(sizeof(struct hash_t));
     table->len = len;
     table->htab = malloc(len * 8);
-    int i;
     for (i=0; i<len; i++) {
         struct hashmap_node_t **node = table->htab + i;
         *node = NULL;
@@ -22,8 +23,8 @@ struct hash_t *htable_create(int len) {
     return table;
 }
 
-struct list_node_t *htable_find(struct hash_t *table, int key) {
-    int key_hash = (int)(hash(key) % table->len);
+struct list_node_t *HTableFind(struct hash_t *table, int key) {
+    int key_hash = (int)(GetHash(key) % table->len);
 
     struct hashmap_node_t * node = *(table->htab + key_hash);
     while (node) {
@@ -35,18 +36,18 @@ struct list_node_t *htable_find(struct hash_t *table, int key) {
     return NULL;
 }
 
-void htable_insert(struct hash_t *table, int key, struct list_node_t *lst_node) {
-    if (htable_find(table, key)) htable_remove(table, key);
-    int key_hash = (int)(hash(key) % table->len);
-
+void HTableInsert(struct hash_t *table, int key, struct list_node_t *lst_node) {
+    int key_hash = (int)(GetHash(key) % table->len);
     struct hashmap_entry_t *entry = malloc(sizeof(struct hashmap_entry_t));
+    struct hashmap_node_t *node = malloc(sizeof(struct hashmap_node_t));
+    struct hashmap_node_t ** first_node = table->htab + key_hash;
     entry->key = key;
     entry->node = lst_node;
-    struct hashmap_node_t *node = malloc(sizeof(struct hashmap_node_t));
     node->entry = *entry;
-    node->next = NULL;
+    node->next = (struct hashmap_node_t *) NULL;
 
-    struct hashmap_node_t ** first_node = table->htab + key_hash;
+    if (HTableFind(table, key)) HTableRemove(table, key);
+
     if (*first_node) {
         struct hashmap_node_t * node_ = *first_node;
         while(node_->next) node_ = node_->next;
@@ -56,8 +57,8 @@ void htable_insert(struct hash_t *table, int key, struct list_node_t *lst_node) 
     }
 }
 
-void htable_remove(struct hash_t *table, int key) {
-    int key_hash = (int)(hash(key) % table->len);
+void HTableRemove(struct hash_t *table, int key) {
+    int key_hash = (int)(GetHash(key) % table->len);
     struct hashmap_node_t ** node = table->htab + key_hash;
     if ((*node)->entry.key == key) { /*the very first node in the basket was the match*/
         struct hashmap_node_t * tmp = *node;
@@ -70,30 +71,30 @@ void htable_remove(struct hash_t *table, int key) {
             if (next_node->entry.key == key) {
                 node_->next = next_node->next;
                 free(next_node);  /*need to improve this*/
-                break;
+                break;  /*because we guarantee that each key is unique*/
             }
             node_ = next_node;
         }
     }
 }
 
-void htable_rehash(struct hash_t **table) {
-    struct hash_t *new_table = htable_create((*table)->len * 2);
+void HTableRehash(struct hash_t **table) {
+    struct hash_t *new_table = HTableCreate((*table)->len * 2);
     int i;
     for (i=0; i<(*table)->len; i++) {
         struct hashmap_node_t * node = *((*table)->htab + i);
         while (node) {
             struct hashmap_node_t * next = node->next;
-            htable_insert(new_table, node->entry.key, node->entry.node);
+            HTableInsert(new_table, node->entry.key, node->entry.node);
             node = next;
         }
     }
-    htable_free(*table);
+    HTableFree(*table);
     *table = new_table;
 }
 
 
-void hashmap_node_free(struct hashmap_node_t * node) {
+void HashmapNodeFree(struct hashmap_node_t * node) {
     while (node) {
         struct hashmap_node_t * next = node->next;
         free(node);  /*probably need to improve that too*/
@@ -101,11 +102,11 @@ void hashmap_node_free(struct hashmap_node_t * node) {
     }
 }
 
-void htable_free(struct hash_t *table) {
+void HTableFree(struct hash_t *table) {
     int i;
     for (i=0; i<table->len; i++) {
         struct hashmap_node_t *node = *(table->htab + i);
-        hashmap_node_free(node);
+        HashmapNodeFree(node);
     }
     free(table->htab);
     free(table);

@@ -1,118 +1,131 @@
 #include "hashtable_test.h"
 
 void TestHTableCreate() {
-    printf("TestHTableCreate ... \n");
-    int n = 10;
-    struct hash_t * table = htable_create(n);
-    assert(table->len == n);
+    int n;
+    struct hash_t * table;
     int i;
+
+    n = 10;
+    table = HTableCreate(n);
+    assert(table->len == n);
+
+    printf("TestHTableCreate ... \n");
     for (i=0; i<n; i++) {
         assert(*(table->htab + i) == NULL);
     }
-    htable_free(table);
+    HTableFree(table);
     printf("TestHTableCreate OK \n\n");
 }
 
 void TestHTableInsert() {
+    int n;
+    int m;
+    int i;
+    struct page_t page;
+    struct hash_t * table;
+    struct list_node_t * nodes[5];
+
+    m = 5;
+    n = 10;
+    table = HTableCreate(n);
+    page = (struct page_t) {0, 10, "sdlkfjsdlkfjs"};
+    for (i=0; i<m; i++) nodes[i] = ListNodeCreate(NULL, NULL, &page);
+
+    for (i=0; i<m; i++) {
+        if (i > 2) HTableInsert(table, 2, nodes[i]);
+        else HTableInsert(table, i, nodes[i]);
+    }
+
     printf("TestHTableInsert ... \n");
-    struct page_t page = {0, 10, "sdlkfjsdlkfjs"};
-    int n = 10;
-    struct hash_t * table = htable_create(n);
-    struct list_node_t * node1 = list_node_create(NULL, NULL, &page);
-    struct list_node_t * node2 = list_node_create(NULL, NULL, &page);
-    struct list_node_t * node3 = list_node_create(NULL, NULL, &page);
-    struct list_node_t * node4 = list_node_create(NULL, NULL, &page);
-    struct list_node_t * node5 = list_node_create(NULL, NULL, &page);
 
-    htable_insert(table, 0, node1);
-    htable_insert(table, 1, node2);
-    htable_insert(table, 2, node3);
-    htable_insert(table, 2, node4);
-    htable_insert(table, 2, node5);
+    assert(HTableFind(table, 0) == nodes[0]);
+    assert(HTableFind(table, 1) == nodes[1]);
+    assert(HTableFind(table, 2) == nodes[m-1]);
 
-    assert(htable_find(table, 0) == node1);
-    assert(htable_find(table, 1) == node2);
-    assert(htable_find(table, 2) == node5);
-
-
-    htable_free(table);
+    HTableFree(table);
     printf("TestHTableInsert OK \n\n");
 }
 
 void TestHTableFind() {
+    int n;
+    int m;
+    int i;
+    struct page_t page;
+    struct hash_t * table;
+    struct list_node_t * nodes[5];
+    
+    m = 5;
+    n = 10;
+    table = HTableCreate(n);
+    page = (struct page_t) {0, 10, "sdlkfjsdlkfjs"};
+    for (i=0; i<m; i++) nodes[i] = ListNodeCreate(NULL, NULL, &page);
+
+    for (i=0; i<m; i++) {
+        if (i > 3) HTableInsert(table, 3, nodes[i]);
+        else HTableInsert(table, i, nodes[i]);
+    }
+
     printf("TestHTableFind ... \n");
-    struct page_t page = {0, 10, "sdlkfjsdlkfjs"};
-    int n = 10;
-    struct hash_t * table = htable_create(n);
-    struct list_node_t * node1 = list_node_create(NULL, NULL, &page);
-    struct list_node_t * node2 = list_node_create(NULL, NULL, &page);
-    struct list_node_t * node3 = list_node_create(NULL, NULL, &page);
-    struct list_node_t * node4 = list_node_create(NULL, NULL, &page);
-    struct list_node_t * node5 = list_node_create(NULL, NULL, &page);
 
-    htable_insert(table, 0, node1);
-    htable_insert(table, 1, node2);
-    htable_insert(table, 2, node3);
-    htable_insert(table, 3, node4);
-    htable_insert(table, 3, node5);
+    assert(HTableFind(table, 0) == nodes[0]);
+    assert(HTableFind(table, 1) == nodes[1]);
+    assert(HTableFind(table, 2) == nodes[2]);
+    assert(HTableFind(table, 3) == nodes[m-1]);
+    assert(HTableFind(table, 4) == NULL);
+    assert(HTableFind(table, 5) == NULL);
+    assert(HTableFind(table, 100) == NULL);
 
-    assert(htable_find(table, 0) == node1);
-    assert(htable_find(table, 1) == node2);
-    assert(htable_find(table, 2) == node3);
-    assert(htable_find(table, 3) == node5);
-    assert(htable_find(table, 4) == NULL);
-    assert(htable_find(table, 5) == NULL);
-    assert(htable_find(table, 100) == NULL);
-
-
-    htable_free(table);
+    HTableFree(table);
     printf("TestHTableFind OK \n\n");
 }
 
 void TestHTableRemove() {
-    printf("TestHTableRemove ... \n");
-    struct page_t page = {0, 10, "sdlkfjsdlkfjs"};
+    struct page_t page;
     int n = 5;
     int i;
-    struct hash_t * table = htable_create(n);
-
-    struct list_node_t * nodes[10];
+    struct hash_t * table = HTableCreate(n);
+    struct list_node_t * nodes[12];
     int keys[] = {0, 1, 2, 3, 4, 5, 6, 120, 1031, 420, -100, 36};
     int m = 12;
+
+    page = (struct page_t) {0, 10, "sdlkfjsdlkfjs"};
+
     for (i=0; i<m; i++) {
-        nodes[i] = list_node_create(NULL, NULL, &page);
-        htable_insert(table, keys[i], nodes[i]);
+        nodes[i] = ListNodeCreate(NULL, NULL, &page);
+        HTableInsert(table, keys[i], nodes[i]);
     }
 
-    for (i=0; i<m; i++) assert(htable_find(table, keys[i]) == nodes[i]);
-    for (i=0; i<m; i++) htable_remove(table, keys[m-i-1]);
-    for (i=0; i<m; i++) assert(htable_find(table, keys[i]) == NULL);
+    printf("TestHTableRemove ... \n");
+    for (i=0; i<m; i++) assert(HTableFind(table, keys[i]) == nodes[i]);
+    for (i=0; i<m; i++) HTableRemove(table, keys[m-i-1]);
+    for (i=0; i<m; i++) assert(HTableFind(table, keys[i]) == NULL);
     printf("TestHTableRemove OK \n\n");
 }
 
 void TestHTableRehash() {
-    printf("TestHTableRehash ... \n");
-    struct page_t page = {0, 10, "sdlkfjsdlkfjs"};
+    struct page_t page;
     int n = 6;
     int i;
-    struct hash_t * table = htable_create(n);
+    struct hash_t * table = HTableCreate(n);
 
     struct list_node_t * nodes[12];
     int m = 12;
     int keys[] = {0, 1, 2, 3, 4, 5, 6, 120, 1031, 420, -100, 36};
-
+    page = (struct page_t) {0, 10, "sdlkfjsdlkfjs"};
 
     for (i=0; i<m; i++) {
-        nodes[i] = list_node_create(NULL, NULL, &page);
-        htable_insert(table, keys[i], nodes[i]);
+        nodes[i] = ListNodeCreate(NULL, NULL, &page);
+        HTableInsert(table, keys[i], nodes[i]);
     }
 
 
-    htable_rehash(&table);
+    HTableRehash(&table);
 
+    
+    printf("TestHTableRehash ... \n");
     assert(table->len == n*2);
-    for (i=0; i<m; i++) assert(htable_find(table, keys[i]) == nodes[i]);
-    for (i=0; i<m; i++) htable_remove(table, keys[i]);
-    for (i=0; i<m; i++) assert(htable_find(table, keys[i]) == NULL);
+    for (i=0; i<m; i++) assert(HTableFind(table, keys[i]) == nodes[i]);
+    for (i=0; i<m; i++) HTableRemove(table, keys[i]);
+    for (i=0; i<m; i++) assert(HTableFind(table, keys[i]) == NULL);
     printf("TestHTableRehash OK \n\n");
 }

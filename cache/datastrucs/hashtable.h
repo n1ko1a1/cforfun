@@ -16,22 +16,22 @@ struct hash_t {
     int len;
 };
 
-/*create and empty hash table*/
-struct hash_t *htable_create(int len);
+/*create and empty GetHash table*/
+struct hash_t *HTableCreate(int len);
 
 /*search for a list_node_t by the key*/
-struct list_node_t *htable_find(struct hash_t *table, int key);
+struct list_node_t *HTableFind(struct hash_t *table, int key);
 
 /*insert pair (key, value)*/
-void htable_insert(struct hash_t *table, int key, struct list_node_t *lst_node);
+void HTableInsert(struct hash_t *table, int key, struct list_node_t *lst_node);
 
 /*removes pair (key, value)*/
-void htable_remove(struct hash_t *table, int key);
+void HTableRemove(struct hash_t *table, int key);
 
 /*free memory*/
-void htable_free(struct hash_t *h);
+void HTableFree(struct hash_t *h);
 
 /*rehash the table*/
-void htable_rehash(struct hash_t **table);
+void HTableRehash(struct hash_t **table);
 
 #endif

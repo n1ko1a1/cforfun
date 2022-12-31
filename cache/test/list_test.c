@@ -2,10 +2,10 @@
 
 void TestPageT()
 {
-    printf("TestPageT ... \n");
     struct page_t lhs = {0, 10, "tententent"};
-
     struct page_t rhs;
+
+    printf("TestPageT ... \n");
     rhs.index = 0;
     rhs.sz = 10;
     rhs.data = "tententent";
@@ -18,17 +18,26 @@ void TestPageT()
 
 void TestListNodeCreate()
 {
-    printf("TestListNodeCreate ...  \n");
     struct page_t page_1 = {0, 10, "tententent"};
 
-    struct list_node_t * node_ptr_1_lhs = list_node_create(NULL, NULL, &page_1);
-    struct list_node_t * node_ptr_2_lhs = list_node_create(NULL, node_ptr_1_lhs, &page_1);
-    struct list_node_t * node_ptr_3_lhs = list_node_create(node_ptr_2_lhs, node_ptr_1_lhs, &page_1);
+    struct list_node_t * node_ptr_1_lhs;
+    struct list_node_t * node_ptr_2_lhs;
+    struct list_node_t * node_ptr_3_lhs;
 
-    struct list_node_t node_1_rhs = { NULL, NULL, &page_1};
-    struct list_node_t node_2_rhs = { NULL, node_ptr_1_lhs, &page_1};
-    struct list_node_t node_3_rhs = { node_ptr_2_lhs, node_ptr_1_lhs, &page_1};
-    
+    struct list_node_t node_1_rhs;
+    struct list_node_t node_2_rhs;
+    struct list_node_t node_3_rhs;
+
+    node_ptr_1_lhs = ListNodeCreate(NULL, NULL, &page_1);
+    node_ptr_2_lhs = ListNodeCreate(NULL, node_ptr_1_lhs, &page_1);
+    node_ptr_3_lhs = ListNodeCreate(node_ptr_2_lhs, node_ptr_1_lhs, &page_1);
+
+    node_1_rhs = (struct list_node_t) { NULL, NULL, &page_1};
+    node_2_rhs = (struct list_node_t) { NULL, node_ptr_1_lhs, &page_1};
+    node_3_rhs = (struct list_node_t) { node_ptr_2_lhs, node_ptr_1_lhs, &page_1};
+
+    printf("TestListNodeCreate ...  \n");
+
     assert( node_ptr_1_lhs->data == node_1_rhs.data );
     assert( node_ptr_1_lhs->next == node_1_rhs.next );
     assert( node_ptr_1_lhs->prev == node_1_rhs.prev );
@@ -50,41 +59,54 @@ void TestListNodeCreate()
 
 void TestListPushFront()
 {
-    printf("TestListPushFront ...  \n");
-    struct list_t * lst = list_create();
-    #define n 10
-    struct page_t pages[n];
+    #define n 10  
     int i;
+    struct list_t * lst;
+    struct page_t pages[n];
+    struct list_node_t * node;
+
+    lst = ListCreate();  
     for (i = 0; i < n; i++) {
         pages[i] = (struct page_t) {i, 10, "hello"};
-        list_push_front(lst, &pages[i]);
+        ListPushFront(lst, &pages[i]);
     }
 
-    struct list_node_t * node = lst->tail;
+    node = lst->tail;
+    
+    printf("TestListPushFront ...  \n");
+
     for (i = 0; i < n; i++) {
         assert( pages[i].index == node->data->index );
         node = node->prev;
     }
-    list_free(lst);
+
+    ListFree(lst);
     printf("TestListPushFront OK \n\n");
 }
 
 void TestListPushBack() {
-    printf("TestListPushBack ...  \n");
-    struct list_t * lst = list_create();
+    struct list_t * lst;
+    struct list_node_t * node;
     #define n 10
     struct page_t pages[n];
     int i;
+
+    lst = ListCreate();
     for (i = 0; i < n; i++) {
         pages[i] = (struct page_t) {i, 10, "hello"};
-        list_push_back(lst, &pages[i]);
+        ListPushBack(lst, &pages[i]);
     }
 
-    struct list_node_t * node = lst->top;
+    node = lst->top;
+
+    
+    printf("TestListPushBack ...  \n");
+
     for (i = 0; i < n; i++) {
         assert( pages[i].index == node->data->index );
         node = node->next;
     }
-    list_free(lst);
+    ListFree(lst);
+
     printf("TestListPushBack OK \n\n");
 }
