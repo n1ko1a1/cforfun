@@ -8,6 +8,7 @@ int main()
     TestListNodeCreate();
     TestListPushFront();
     TestListPushBack();
+    TestListMoveUpfront();
 
     TestHTableCreate();
     TestHTableInsert();

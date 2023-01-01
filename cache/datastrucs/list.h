@@ -24,6 +24,9 @@ struct list_t * ListCreate();
 
 /*void list_pop_back( struct list_t * lst);*/
 
+/*given an existing node we move it to the top*/
+void ListMoveUpfront( struct list_t *lst, struct list_node_t *p);
+
 void ListPushFront( struct list_t *lst, struct page_t *pg );
 
 void ListPushBack( struct list_t *lst, struct page_t *pg );

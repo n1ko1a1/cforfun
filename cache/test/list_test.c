@@ -110,3 +110,69 @@ void TestListPushBack() {
 
     printf("TestListPushBack OK \n\n");
 }
+
+
+void TestListMoveUpfront() {
+    struct list_t * lst;
+    #define n 10
+    struct list_node_t * node;
+    struct list_node_t * node1;
+    struct list_node_t * node2;
+    struct page_t pages[n];
+    int i;
+
+    lst = ListCreate();
+    for (i = 0; i < n; i++) {
+        pages[i] = (struct page_t) {i, 10, "hello"};
+        ListPushBack(lst, &pages[i]);
+    }
+
+    
+    printf("TestListMoveUpfront ...  \n");
+
+    node = lst->top;
+    for (i = 0; i < n; i++) {
+        assert( pages[i].index == node->data->index );
+        node = node->next;
+    }
+
+    node1 = lst->top;
+    node2 = lst->tail;
+    ListMoveUpfront(lst, lst->tail);
+    node = lst->top;
+    assert(node == node2);
+    node = node->next;
+    while (node) {
+        assert(node == node1);
+        node = node->next;
+        node1 = node1->next;
+    }
+
+    
+    node = lst->tail;
+    node1 = lst->tail->prev;
+    node2 = lst->top;
+    ListMoveUpfront(lst, lst->tail->prev);
+    assert(lst->tail == node);
+    assert(lst->top == node1);
+    node = lst->top->next;
+    for (i=0; i<n-2; i++) {
+        assert(node == node2);
+        node = node->next;
+        node2 = node2->next;
+    }
+
+    node = lst->top;
+    ListMoveUpfront(lst, lst->top);
+    node1 = lst->top;
+    while (node) {
+        assert(node == node1);
+        node = node->next;
+        node1 = node1->next;
+    }
+
+
+    ListFree(lst);
+
+    printf("TestListMoveUpfront OK \n\n");
+}

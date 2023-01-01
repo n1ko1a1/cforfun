@@ -56,6 +56,18 @@ void ListPushBack( struct list_t *lst, struct page_t *pg )
     lst->tail = tmp; 
 }
 
+void ListMoveUpfront( struct list_t *lst, struct list_node_t *p) {
+    if (lst->top == p) return;
+    if (lst->tail == p) {
+        lst->tail = p->prev;
+    }
+    lst->top->prev = p;
+    p->prev->next = p->next;
+    p->next = lst->top;
+    lst->top = p;
+    p->prev = NULL;
+}
+
 void PrintList( struct list_t * lst )
 {
     struct list_node_t * current = lst->top;
