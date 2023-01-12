@@ -63,6 +63,7 @@ void ListMoveUpfront( struct list_t *lst, struct list_node_t *p) {
     }
     lst->top->prev = p;
     p->prev->next = p->next;
+    if (p->next) p->next->prev = p->prev;
     p->next = lst->top;
     lst->top = p;
     p->prev = NULL;
