@@ -28,11 +28,11 @@ int main()
     /*create pointer to page_1*/
     
     /*create list and fill with pages*/
-    struct list_t *my_list = list_create();
-    list_push_front( my_list, page_1_ptr );
-    list_push_back( my_list, page_2_ptr );
-    print_list( my_list );
-    list_free(my_list);
+    struct list_t *my_list = ListCreate();
+    ListPushFront( my_list, page_1_ptr );
+    ListPushBack( my_list, page_2_ptr );
+    PrintList( my_list );
+    ListFree(my_list);
 
     return 0;
 }

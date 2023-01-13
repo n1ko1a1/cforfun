@@ -2,11 +2,11 @@
 #include "page.h"
 
 #include <stdlib.h> /*malloc*/
-#include <stddef.h>/*NULL*/
-#include <stdio.h>/*printf*/
+#include <stddef.h> /*NULL*/
+#include <stdio.h>  /*printf*/
 
 
-struct list_node_t * list_node_create(struct list_node_t * next, struct list_node_t * prev, struct page_t * data)
+struct list_node_t * ListNodeCreate(struct list_node_t * next, struct list_node_t * prev, struct page_t * data)
 {
     struct list_node_t *tmp = malloc( sizeof( struct list_node_t ) );
     tmp->data = data;
@@ -15,7 +15,7 @@ struct list_node_t * list_node_create(struct list_node_t * next, struct list_nod
     return tmp;
 }
 
-struct list_t * list_create()
+struct list_t * ListCreate()
 {
     struct list_t * new_list = malloc( sizeof( struct list_t ) );
     new_list->tail = NULL;
@@ -23,7 +23,7 @@ struct list_t * list_create()
     return new_list;
 }
 
-void list_push_front( struct list_t *lst, struct page_t *pg )
+void ListPushFront( struct list_t *lst, struct page_t *pg )
 {
     struct list_node_t *tmp = malloc( sizeof( struct list_node_t ) );
     tmp->prev = NULL;
@@ -40,7 +40,7 @@ void list_push_front( struct list_t *lst, struct page_t *pg )
     lst->top = tmp; 
 }
 
-void list_push_back( struct list_t *lst, struct page_t *pg )
+void ListPushBack( struct list_t *lst, struct page_t *pg )
 {
     struct list_node_t *tmp = malloc( sizeof( struct list_node_t ) );
     tmp->prev = NULL;
@@ -56,7 +56,20 @@ void list_push_back( struct list_t *lst, struct page_t *pg )
     lst->tail = tmp; 
 }
 
-void print_list( struct list_t * lst )
+void ListMoveUpfront( struct list_t *lst, struct list_node_t *p) {
+    if (lst->top == p) return;
+    if (lst->tail == p) {
+        lst->tail = p->prev;
+    }
+    lst->top->prev = p;
+    p->prev->next = p->next;
+    if (p->next) p->next->prev = p->prev;
+    p->next = lst->top;
+    lst->top = p;
+    p->prev = NULL;
+}
+
+void PrintList( struct list_t * lst )
 {
     struct list_node_t * current = lst->top;
     while( current )
@@ -68,7 +81,7 @@ void print_list( struct list_t * lst )
     }
 }
 
-void list_free( struct list_t * lst )
+void ListFree( struct list_t * lst )
 {
     struct list_node_t * current = lst->top;
     while(current)

@@ -1,4 +1,5 @@
 #include "list_test.h"
+#include "hashtable_test.h"
 
 int main()
 {
@@ -7,7 +8,13 @@ int main()
     TestListNodeCreate();
     TestListPushFront();
     TestListPushBack();
+    TestListMoveUpfront();
 
+    TestHTableCreate();
+    TestHTableInsert();
+    TestHTableFind();
+    TestHTableRemove();
+    TestHTableRehash();
     /*
     struct page_t l;
     printf("index: %d\n", l.index );

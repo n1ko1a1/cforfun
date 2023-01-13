@@ -14,9 +14,9 @@ struct list_t
     struct list_node_t * tail;
 };
 
-struct list_node_t * list_node_create(struct list_node_t * next, struct list_node_t * prev, struct page_t * data);
+struct list_node_t * ListNodeCreate(struct list_node_t * next, struct list_node_t * prev, struct page_t * data);
 
-struct list_t * list_create();
+struct list_t * ListCreate();
 
 /*int list_size( const struct list_t * lst );*/
 
@@ -24,13 +24,16 @@ struct list_t * list_create();
 
 /*void list_pop_back( struct list_t * lst);*/
 
-void list_push_front( struct list_t *lst, struct page_t *pg );
+/*given an existing node we move it to the top*/
+void ListMoveUpfront( struct list_t *lst, struct list_node_t *p);
 
-void list_push_back( struct list_t *lst, struct page_t *pg );
+void ListPushFront( struct list_t *lst, struct page_t *pg );
 
-void list_free( struct list_t * lst );
+void ListPushBack( struct list_t *lst, struct page_t *pg );
 
-void print_list( struct list_t * lst );
+void ListFree( struct list_t * lst );
+
+void PrintList( struct list_t * lst );
 
 /*move_upfront*/
 

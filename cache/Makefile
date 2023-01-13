@@ -1,7 +1,7 @@
-SRCMODULES = datastrucs/list.c datastrucs/page.c
+SRCMODULES = datastrucs/list.c datastrucs/page.c datastrucs/hashtable.c
 default_target = main.c
 ifeq (run_unit_tests, $(MAKECMDGOALS))
-SRCMODULES = test/list_test.c datastrucs/page.c datastrucs/list.c
+SRCMODULES = test/list_test.c test/hashtable_test.c datastrucs/page.c datastrucs/list.c datastrucs/hashtable.c
 default_target = test/main.c
 endif
 OBJMODULES = $(SRCMODULES:.c=.o)
