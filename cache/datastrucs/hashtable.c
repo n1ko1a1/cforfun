@@ -38,12 +38,12 @@ struct list_node_t *HTableFind(struct hash_t *table, int key) {
 
 void HTableInsert(struct hash_t *table, int key, struct list_node_t *lst_node) {
     int key_hash = (int)(GetHash(key) % table->len);
-    struct hashmap_entry_t *entry = malloc(sizeof(struct hashmap_entry_t));
     struct hashmap_node_t *node = malloc(sizeof(struct hashmap_node_t));
     struct hashmap_node_t ** first_node = table->htab + key_hash;
-    entry->key = key;
-    entry->node = lst_node;
-    node->entry = *entry;
+    struct hashmap_entry_t entry;
+    entry.key = key;
+    entry.node = lst_node;
+    node->entry = entry;
     node->next = (struct hashmap_node_t *) NULL;
 
     if (HTableFind(table, key)) HTableRemove(table, key);
@@ -63,14 +63,14 @@ void HTableRemove(struct hash_t *table, int key) {
     if ((*node)->entry.key == key) { /*the very first node in the basket was the match*/
         struct hashmap_node_t * tmp = *node;
         *node = (*node)->next;
-        free(tmp);  /*need to improve this*/
+        free(tmp);
     } else {
         struct hashmap_node_t * node_ = *node;
         while (node_) {
             struct hashmap_node_t * next_node = node_->next;
             if (next_node->entry.key == key) {
                 node_->next = next_node->next;
-                free(next_node);  /*need to improve this*/
+                free(next_node);
                 break;  /*because we guarantee that each key is unique*/
             }
             node_ = next_node;
@@ -92,7 +92,6 @@ void HTableRehash(struct hash_t **table) {
     HTableFree(*table);
     *table = new_table;
 }
-
 
 void HashmapNodeFree(struct hashmap_node_t * node) {
     while (node) {
